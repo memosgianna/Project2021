@@ -1,0 +1,38 @@
+abstract class Entity{
+
+    String name;
+    String description;
+    int id;
+
+    public Entity(String name, String description, int id) {
+
+        this.name = name;
+        this.description = description;
+        this.id = id;
+
+    }
+
+    public int getId() {
+
+        return id;
+    }
+
+    public String getName() {
+
+        return name;
+    }
+
+    public String getEntityInfo() {
+
+        return "Name: " + name + "  Description: " + description + "  Id: " + id;
+    }
+
+    public abstract String getDetails();
+
+    @Override
+    public String toString() {
+
+        return getEntityInfo() + "  " + getDetails();
+    }
+
+}
