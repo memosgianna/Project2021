@@ -1,0 +1,58 @@
+import java.util.ArrayList;
+
+class Beneficiary extends User{
+
+
+    private int noPersons;
+    ArrayList<RequestDonationList> receivedList= new ArrayList<RequestDonationList>();
+    ArrayList<Requests> requestsList= new ArrayList<Requests>();
+
+    Beneficiary()
+    {}
+
+    Beneficiary(String name, String phone) {
+
+        super(name, phone);
+
+        noPersons = 1;
+        receivedList = new ArrayList<>();
+        requestsList = new ArrayList<>();
+
+    }
+
+    Beneficiary(String name, String phone, int noPersons) {
+
+        super(name, phone);
+        this.noPersons = noPersons;
+        receivedList = new ArrayList<>();
+        requestsList = new ArrayList<>();
+    }
+
+    Menu m3= new Menu();
+
+    public int getNoPersons() {
+
+        return noPersons;
+    }
+
+    public void addRequest(Requests r) {
+        requestsList.add(r);
+    }
+
+    public void removeRequest(int index) {
+        requestsList.remove(index);
+
+    }
+
+    public void modifyRequest() {
+
+    }
+
+    public void commitRequest() {
+
+
+    }
+
+
+
+}
