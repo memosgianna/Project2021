@@ -1,0 +1,770 @@
+import java.util.InputMismatchException;
+import java.util.Scanner;
+import java.util.HashMap;
+
+public class Menu {
+
+    Admin a1;
+    Beneficiary b1;
+    Beneficiary b2;
+    Donator d1;
+
+    HashMap<String, Donator> donList;
+    HashMap<String, Beneficiary> benList;
+
+    String telephone;
+
+    Organization o = new Organization(); //To onoma tou organismou
+
+    Offers of = new Offers();
+    Requests r=new Requests();
+    RequestDonation rdon=new RequestDonation();
+
+    public Menu(Organization o) {
+
+        this.o = o;
+
+
+        a1 = new Admin("Anastasia", "6908991923");
+        b1 = new Beneficiary("Kwstas", "6974356913");
+        b2 = new Beneficiary("Iwanna", "6945678323", 3);
+        d1 = new Donator("Poluksenh", "6987675435");
+
+
+        donList = new HashMap<>();
+        benList = new HashMap<>();
+
+
+        donList.put("6987675435", d1);
+        benList.put("6974356913", b1);
+        benList.put("6945678323", b2);
+    }
+
+    public void getMenu() {
+
+        try (Scanner sc = new Scanner(System.in);) {
+            System.out.println("Kalws Hrthate sto susthma Ethelontwn kai Dwrhtwn!");
+            System.out.println("--------------------------------------------------");
+
+            while (true) {
+                System.out.println("Plhktrologeiste  to kinhto sas : ");
+                if (sc.hasNextLong()) {
+                    telephone = sc.nextLine();
+                    break;
+                } else {
+                    System.out.println("Mh egkurh eisagwgh thlefwnou, ksanaprospatheiste: ");
+                    sc.nextLine();
+                }
+            }
+            Offers of = new Offers();
+
+            int choice = 0;
+            {
+
+
+
+                if (a1.getPhone().equalsIgnoreCase(telephone)) {
+                    {
+                        System.out.println("Eiste Admin.");
+                        System.out.println("Kalws Hrthate! \n\n");
+                        do {
+
+                            String mainMenu = ("Pragmatopoihste mia epilogh: \n"
+                                    + "[1] View\n"
+                                    + "[2] Monitor Organization\n"
+                                    + "[3] Back\n"
+                                    + "[4] Logout\n"
+                                    + "[5] Exit\n");
+                            System.out.println(mainMenu);
+                            System.out.println("-----------------------------------");
+                            boolean validNumber;
+                            boolean limitNumber;
+
+                            do {
+                                validNumber = false;
+                                try {
+                                    choice = sc.nextInt();
+                                    do {
+                                        limitNumber = false;
+                                        switch (choice) {
+
+                                            //Analush twn paroxwn
+                                            case 1:
+                                                System.out.println("case 1.");
+                                                System.out.println("1. Material");
+                                                System.out.println("2. Services");
+
+                                                choice = sc.nextInt();
+
+
+                                                switch (choice) {
+                                                    //Material
+                                                    case 1:
+
+                                                        for (RequestDonation rd : o.getCurrentDonations().getList()) {
+                                                            Entity en = rd.getEntity();
+                                                            if (en instanceof Material) {
+                                                                RequestDonation rd1 = new RequestDonation(en, 0);
+                                                                System.out.println(en.getName() + " " + rd.getQuantity());
+
+                                                                of.add(rd1, o);
+
+                                                            }
+                                                        }
+
+                                                        break;
+                                                    //Service
+                                                    case 2:
+
+
+                                                        for (RequestDonation rd : o.getCurrentDonations().getList()) {
+                                                            Entity en = rd.getEntity();
+                                                            if (en instanceof Service) {
+                                                                System.out.println(en.getName() + " " + rd.getQuantity());
+
+                                                            }
+                                                        }
+                                                        break;
+
+                                                    default:
+                                                        System.out.println("Lathos Epilogh.Ksanaprospatheiste:");
+                                                        getMenu();
+
+                                                }
+                                                break;
+
+                                            //Monitor Organization
+                                            case 2:
+
+                                                System.out.println("case 2.");
+                                                System.out.println("1.List of Beneciaries" + "\n" + "2.List of Donators" + "\n" + "Make a choice");
+                                                choice = sc.nextInt();
+
+                                                switch (choice) {
+                                                    //Beneficiaries
+                                                    case 1:
+                                                        System.out.println("Oloi oi epwfeloumenoi einai: ");
+                                                        o.listBeneficiaries();
+
+                                                        System.out.println("Epithumeite na diagrapsete kapoion beneficiary;"+"(yes/no)");
+                                                        if(sc.hasNext());
+
+                                                        String answer1=sc.next();
+
+                                                        if(answer1.trim().toLowerCase().equals("yes"))
+                                                        {
+                                                            System.out.println("Epilekste me bash thn thesh tou beneficiary: ");
+
+                                                            choice=sc.nextInt();
+                                                            o.removeBeneficiary(choice - 1);
+                                                        }
+
+                                                        break;
+                                                    //Donators
+                                                    case 2:
+                                                        System.out.println("Oloi oi donators einai:");
+                                                        o.listDonators();
+
+                                                        System.out.println("Epithumeite na diagrapsete kapoion donator;"+"(yes/no)");
+                                                        if(sc.hasNext());
+
+                                                        String answer2=sc.next();
+
+                                                        if(answer2.trim().toLowerCase().equals("yes")){
+
+                                                            System.out.println("Epilekste me bash thn thesh tou donator: ");
+                                                            choice=sc.nextInt();
+                                                            o.removeDonator(choice - 1);
+                                                        }
+
+                                                        break;
+                                                }
+                                                break;
+
+                                            case 3:
+                                                getMenu(); //Epistrofh sthn arxikh selida tou organismou
+                                                break;
+                                            case 4:
+                                                logout(); //Aposundesh tou xrhsth
+                                                break;
+                                            case 5:
+                                                exit(); //Eksodos apo to susthma
+                                                break;
+
+                                            default:
+                                                validNumber = false;
+                                                limitNumber = true;
+                                                System.out.println("Dokimaste mia egkhrh epilogh (1-6).");
+                                                choice = sc.nextInt();
+
+                                        }
+                                    } while (limitNumber);
+
+                                } catch (InputMismatchException ime) {
+                                    validNumber = true;
+                                    System.out.println("Eisagete mono arithmous.");
+                                    sc.nextLine();
+                                }
+                            } while (validNumber);
+
+                        }while(choice!=6);
+                    }
+                }
+
+                //Anagnwrish dwrhtwn susthmatos
+
+                else if (donList.containsKey(telephone)) {
+
+                    System.out.println("Eiste Dwrhths. ");
+                    System.out.println("Kalws Hrthate! \n\n");
+                    do{
+                        System.out.println("-----------------------------------");
+                        String Menu = ("Pragmatopoihste mia epilogh: \n"
+                                + "[1] Add Offer\n"
+                                + "[2] Show Offer\n"
+                                + "[3] Commit\n"
+                                + "[4] Back\n"
+                                + "[5] Logout\n"
+                                + "[6] Exit");
+
+                        System.out.println(Menu);
+                        System.out.println("-----------------------------------");
+                        boolean validChoice = true; //Gia thn epikurwsh swsths epiloghs tou xrhsth
+                        boolean limitChoice; //choice: 1-6
+
+                        do {
+                            validChoice = false;
+
+                            try {
+                                choice = sc.nextInt();
+                                do {
+                                    limitChoice = false;
+                                    switch (choice) {
+
+                                        //Add Offer
+                                        case 1:
+                                            System.out.println("case 1.");
+                                            System.out.println("1. Material");
+                                            System.out.println("2. Services");
+
+                                            choice = sc.nextInt();
+
+
+                                            switch (choice) {
+                                                case 1:
+                                                    //Material
+                                                    for (RequestDonation rd : o.getCurrentDonations().getList()) {
+                                                        Entity en = rd.getEntity();
+                                                        if (en instanceof Material) {
+                                                            RequestDonation rd1 = new RequestDonation(en, 0);
+                                                            System.out.println(en.getName() + " " + rd.getQuantity());
+
+                                                            of.add(rd1, o);
+
+                                                        }
+                                                    }
+
+                                                    System.out.println("Poso epithumeite na prosthesete sto kathena");
+
+                                                    for (RequestDonation rd : of.getList()) {
+                                                        Entity en = rd.getEntity();
+                                                        if (en instanceof Material) {
+                                                            choice = sc.nextInt();
+                                                            rd.setQuantity(rd.getQuantity() + choice);
+
+                                                        }
+                                                    }
+
+                                                    break;
+
+                                                case 2:
+                                                    //Service
+                                                    for (RequestDonation rd : o.getCurrentDonations().getList()) {
+                                                        Entity en = rd.getEntity();
+                                                        if (en instanceof Service) {
+                                                            System.out.println(en.getName() + " " + rd.getQuantity());
+                                                            of.add(rd, o);
+
+                                                        }
+                                                    }
+
+                                                    System.out.println("Poso epithumeite na prosthesete sto kathena");
+
+                                                    for (RequestDonation rd : of.getList()) {
+                                                        Entity en = rd.getEntity();
+
+                                                        if (en instanceof Service) {
+                                                            choice = sc.nextInt();
+                                                            rd.setQuantity(rd.getQuantity() + choice);
+
+                                                        }
+                                                    }
+
+                                                    break;
+
+
+                                                default:
+                                                    System.out.println("Lathos Epilogh. Ksanaprospatheiste:");
+                                                    getMenu();
+
+
+                                            }
+                                            donList.get(telephone).addOffer(of);
+                                            break;
+
+                                        //Show Offers
+                                        case 2:
+                                            System.out.println("case 2.");
+                                            int l = 1; //Metrhths gia thn aparithmhsh twn paroxwn
+                                            for (RequestDonation rd : of.getList()) {
+
+                                                if (of.getList() == null) {
+                                                    System.out.println("H lista einai kenh, pragmatopoihse mia dwrea");
+                                                }
+                                                else {
+                                                    Entity en = rd.getEntity();
+                                                    System.out.println(l + ". " + en.getName() + " " + rd.getQuantity());
+                                                    l++;
+                                                }
+                                            }
+
+                                            System.out.println("---------------------------------");
+                                            System.out.println("1.Epilogh Paroxhs");
+                                            System.out.println("2.Katharismos olwn twn paroxwn");
+                                            System.out.println("3.Commit");
+                                            System.out.println("---------------------------------");
+
+                                            System.out.println("Kante mia epilogh:");
+
+                                            choice = sc.nextInt();
+                                            switch (choice) {
+
+                                                //Epilogh Paroxhs
+                                                case 1:
+                                                    System.out.println("Ti epithumeis na pragmatopoihseis;");
+
+                                                    System.out.println("1.Diagrafh Paroxhs");
+                                                    System.out.println("2.Epeksergasia Paroxhs");
+                                                    System.out.println("---------------------------------");
+
+                                                    choice = sc.nextInt();
+                                                    System.out.println("Kante mia epilogh");
+
+                                                    switch (choice) {
+                                                        //Diagrafh Paroxhs
+                                                        case 1:
+                                                            System.out.println("Epilekste analoga me thn thesh ths paroxhs, poia paroxh epithumeite na diagrapsete");
+                                                            choice = sc.nextInt();
+
+                                                            of.remove(choice - 1);
+
+                                                            break;
+                                                        //Epeksergasia Paroxhs
+                                                        case 2:
+                                                            System.out.println("Epilekste analoga me thn thesh ths paroxhs, poia paroxh epithumeite na epeksergasteite");
+                                                            choice = sc.nextInt();
+                                                            System.out.println("Twra epilekste thn nea timh");
+                                                            int quan = sc.nextInt();
+
+                                                            of.modify(choice - 1, quan); //Tropopoihsh ths timhs
+
+                                                            break;
+
+                                                        default:
+                                                            System.out.println("Lathos Epilogh. Ksanaprospatheiste");
+                                                            getMenu();
+
+                                                    }
+                                                    break;
+
+                                                //Katharismos twn paroxwn
+                                                case 2:
+                                                    donList.get(telephone).reset();
+                                                    break;
+
+                                                //Oloklhrwsh Paroxwn
+                                                case 3:
+                                                    donList.get(telephone).commitOffers(o);
+                                                    System.out.println("Oloklhrwsh dwreas");
+                                                    break;
+
+                                                default:
+                                                    System.out.println("Lathos Epilogh. Ksanaprospatheiste");
+                                                    getMenu();
+                                            }
+                                            break;
+
+                                        //Commit
+                                        case 3:
+                                            int i = 0;
+                                            for (RequestDonation rd : of.getList()) {
+
+                                                o.getCurrentDonations().modify(i, rd.getQuantity() + o.getCurrentDonations().getWithIndex(i).getQuantity());
+                                                i++;
+                                            }
+
+                                            System.out.println("Oloklhrwsh Dwreas");
+                                            break;
+
+                                        case 4:
+                                            System.out.println("case 4.");
+                                            getMenu(); //Epistorfh sthn arxikh selida tou susthmatos
+                                            break;
+                                        case 5:
+                                            logout(); //Aposundesh tou xrhsth apo to susthma
+                                            break;
+                                        case 6:
+                                            exit(); //Eksodos apo to susthma
+                                            break;
+                                        default:
+                                            validChoice = false;
+                                            limitChoice = true;
+
+                                    }
+                                } while (limitChoice);
+
+                            } catch (InputMismatchException ime) {
+                                validChoice = true;
+                                System.out.println("Eisagete mono arithmous.");
+                                sc.nextLine();
+                            }
+                        } while (validChoice);
+
+                    }while(choice!=6);
+                }
+
+                //Anagnwrish twn Epwfeloumenwn tou susthmatos
+
+                else if (benList.containsKey(telephone)) {
+
+                    System.out.println("Eisai Beneficiary.");
+                    System.out.println("Kalws Hrthate! \n\n");
+
+                    do {
+                        System.out.println("-----------------------------------");
+                        String mainMenu = ("Pragmatopoihste mia epilogh: \n"
+                                + "[1] Add Request\n"
+                                + "[2] Show Requests\n"
+                                + "[3] Commit\n"
+                                + "[4] Back\n"
+                                + "[5] Logout\n"
+                                + "[6] Exit");
+
+                        System.out.println(mainMenu);
+                        System.out.println("-----------------------------------");
+                        boolean validChoice = true;
+                        boolean limitChoice;
+
+                        do {
+                            validChoice = false;
+
+                            try {
+                                choice = sc.nextInt();
+                                do {
+                                    limitChoice = false;
+                                    switch (choice) {
+                                        //Add Request
+                                        case 1:
+                                            System.out.println("case 1.");
+                                            System.out.println("1. Material");
+                                            System.out.println("2. Services");
+
+                                            choice = sc.nextInt();
+
+                                            switch (choice) {
+                                                //Material
+                                                case 1:
+
+                                                    for (RequestDonation rd : o.getCurrentDonations().getList()) {
+                                                        Entity en = rd.getEntity();
+
+                                                        if (en instanceof Material) {
+                                                            RequestDonation rd1 = new RequestDonation(en, 0);
+                                                            System.out.println(en.getName() + " " + rd.getQuantity());
+
+                                                            of.add(rd1, o);
+
+                                                        }
+                                                    }
+
+                                                    System.out.println("Poso epithumeite na parete apo to kathena;");
+
+                                                    for (RequestDonation rd : of.getList()) {
+                                                        Entity en = rd.getEntity();
+
+                                                        if (en instanceof Material) {
+                                                            choice = sc.nextInt();
+                                                            rd.setQuantity(rd.getQuantity() + choice);
+
+                                                        }
+                                                    }
+                                                    break;
+
+                                                //Service
+                                                case 2:
+
+                                                    for (RequestDonation rd : o.getCurrentDonations().getList()) {
+                                                        Entity en = rd.getEntity();
+                                                        if (en instanceof Service) {
+                                                            System.out.println(en.getName() + " " + rd.getQuantity());
+
+                                                            of.add(rd, o);
+
+                                                        }
+                                                    }
+
+                                                    System.out.println("Poso epithumeite na parete apo to kathena;");
+                                                    if(sc.hasNext());
+
+                                                    for (RequestDonation rd : of.getList()) {
+                                                        Entity en = rd.getEntity();
+
+                                                        if (en instanceof Service) {
+                                                            choice = sc.nextInt();
+                                                            rd.setQuantity(rd.getQuantity() +choice);
+
+                                                        }
+                                                    }
+                                                    break;
+
+                                                default:
+                                                    System.out.println("Lathos Epilogh.Ksanaprospatheiste:");
+                                                    getMenu();
+
+
+                                            }
+                                            benList.get(telephone).addRequest(r);
+                                            break;
+
+                                        //Show Requests
+                                        case 2:
+
+                                            System.out.println("case 2.");
+                                            for (RequestDonation rd : of.getList()) {
+                                                Entity en = rd.getEntity();
+                                                System.out.println(en.getName() + " " + rd.getQuantity());
+
+                                            }
+
+                                            System.out.println("---------------------------------");
+                                            System.out.println("1.Epilogh Paroxhs");
+                                            System.out.println("2.Katharismos olwn twn paroxwn");
+                                            System.out.println("3.Commit");
+                                            System.out.println("---------------------------------");
+
+                                            System.out.println("Kante mia epilogh:");
+
+                                            choice = sc.nextInt();
+                                            switch (choice) {
+
+                                                //Epilogh Paroxhs
+                                                case 1:
+                                                    System.out.println("Ti epithumeis na pragmatopoihseis;");
+
+                                                    System.out.println("1.Diagrafh Paroxhs");
+                                                    System.out.println("2.Epeksergasia Paroxhs");
+                                                    System.out.println("---------------------------------");
+
+                                                    choice = sc.nextInt();
+                                                    System.out.println("Kante mia epilogh");
+
+                                                    switch (choice) {
+                                                        //Diagrafh
+                                                        case 1:
+                                                            System.out.println("Epilekste analoga me thn thesh ths paroxhs, poia paroxh epithumeite na diagrapsete");
+                                                            choice = sc.nextInt();
+
+                                                            of.remove(choice - 1);
+
+                                                            break;
+                                                        //Edit
+                                                        case 2:
+                                                            System.out.println("Epilekste analoga me thn thesh ths paroxhs, poia paroxh epithumeite na epeksergasteite");
+                                                            choice = sc.nextInt();
+
+                                                            System.out.println("Twra epilekste thn nea timh");
+                                                            double quan = sc.nextDouble();
+
+                                                            of.modify(choice - 1, quan); //Tropopoihsh ths timhs
+
+                                                            break;
+
+
+                                                        default:
+                                                            System.out.println("Lathos Epilogh. Ksanaprospatheiste");
+                                                            getMenu();
+
+                                                    }
+                                                    break;
+
+                                                //Katharismos Paroxwn
+                                                case 2:
+                                                    benList.get(telephone).reset();
+                                                    break;
+
+                                                //Commit
+                                                case 3:
+
+                                                    benList.get(telephone).commitRequest(of,o);
+                                                    break;
+
+                                                default:
+                                                    System.out.println("Lathos Epilogh. Ksanaprospatheiste");
+                                                    getMenu();
+                                            }
+                                            break;
+
+                                        //Commit
+                                        case 3:
+
+
+                                            benList.get(telephone).commitRequest(of, o);
+
+                                            break;
+                                        case 4:
+                                            System.out.println("case 4.");
+                                            getMenu(); //Epistrofh sthn arxikh selida tou susthmatos
+                                            break;
+                                        case 5:
+                                            logout(); //Aposundesh tou xrhsth apo to susthma
+                                            break;
+                                        case 6:
+                                            exit(); //Eksodos apo to susthma
+                                            break;
+                                        default:
+                                            validChoice = false;
+                                            limitChoice = true;
+                                            System.out.println("Dokimaste mia egkurh epilogh (1-6).");
+                                            choice = sc.nextInt();
+
+                                    }
+                                } while (limitChoice);
+
+                            } catch (InputMismatchException ime) {
+                                validChoice = true;
+                                System.out.println("Eisagete mono arithmous.");
+                                sc.nextLine();
+                            }
+
+                        } while (validChoice);
+
+                    } while(choice!=6);
+
+                }
+
+                //Dhmiourgia neou xrhsth tou susthmatos
+                else
+                    NewUser();
+
+            }
+        }
+    }
+
+
+    //Methodos gia thn aposundesh tou xrhsth apo to susthma
+    public void logout(){
+        Scanner log= new Scanner(System.in);
+        String s;
+        boolean validChoice;
+
+        validChoice=true;
+        System.out.println("Exete aposundethei.Epithumeite na sundetheite ksana?(yes/no)");
+        s = log.next();
+
+        if (s.trim().toLowerCase().equals("yes")) {
+            getMenu(); //yes
+        }
+        else {
+            System.out.println("Euxaristoume gia thn symmetoxh sas.");
+            System.exit(0); //no
+        }
+
+    }
+
+    //Methodos gia thn eksodo tou xrhsth apo to susthma
+    public void exit(){
+        System.out.println("Euxaristoume gia thn symmetoxh sas.");
+        System.exit(0);
+    }
+
+    //Dhmiourgia neou xrhsth sto susthma
+    public void NewUser() {
+
+        try (Scanner sc = new Scanner(System.in))
+        {
+            while (true) {
+
+                System.out.println("Den eiste eggegrammenos sto susthma mas.Thelete na eggrafteite ws Beneficiary h ws Donator?");
+
+                String ans = sc.next(); //answer: Donator or Beneficiary
+
+                if (ans.trim().toLowerCase().equals("donator"))
+                {
+                    System.out.println("Plhktrologiste to onoma sas:");
+                    sc.nextLine();
+                    String s1 = sc.nextLine();
+                    d1.setName(s1);
+                    while (true) {
+                        System.out.println("Plhktrologeiste to kinhto sas :");
+                        if (sc.hasNextLong()) {
+                            String s2 = (sc.next());
+                            d1.setPhone(s2);
+                            break;
+                        }
+                        else {
+                            System.out.println("Mh egkurh eisagwgh kinhtou.Dokimaste ena egkuro thlefwno.");
+                            sc.nextLine();
+                        }
+                    }
+                    System.out.println("Sugxarhthria eiste o neos Donator me stoixeia: \n " +"Name: " +d1.getName() +" "+"Telephone: " + d1.getPhone());
+                    o.insertDonator(d1);
+                    donList.put(d1.getPhone(), d1);
+                    System.out.println("----------------------------");
+                    System.out.println("OLOI OI DWRHTES EINAI: ");
+                    o.listDonators();
+
+                    getMenu(); //Dunatothta o neos xrhsths na summetasxei sto susthma dwrewn
+                    if(sc.hasNext())
+                        break;
+                }
+
+
+                else if (ans.trim().toLowerCase().equals("beneficiary"))
+                {
+                    System.out.println("Plhktrologiste to onoma sas: ");
+                    sc.nextLine();
+                    String s3 = sc.nextLine();
+                    b1.setName(s3);
+
+                    while (true) {
+                        System.out.println("Plhktrologiste to kinhto  sas: ");
+                        if (sc.hasNextLong()) {
+                            String s4 = (sc.next());
+                            b1.setPhone(s4);
+                            break;
+                        }
+                        else {
+                            System.out.println("Mh egkurh eisagwgh kinhtou.Dokimaste ksana:");
+                            sc.nextLine();
+                        }
+                    }
+                    System.out.println("Sugxarhthria, eggrafhkate sto susthma mas me epituxia: \n " +"Name: "+ b1.getName() + " " +"Telephone: "+ b1.getPhone());
+                    o.insertBeneficiary(b1);
+                    benList.put(b1.getPhone(), b1);
+
+                    System.out.println("----------------------------");
+                    System.out.println("OLOI OI EPWFELOUMENOI EINAI: ");
+                    o.listBeneficiaries();
+
+                    getMenu(); //Dunatothta o neos xrhsths na summetasxei sto susthma dwrewn
+                    if(sc.hasNext())
+                        break;
+
+                }
+                else {
+                    System.out.println("Dustuxws h eggrafh sas den einai egkurh. Prospatheiste ksana.");
+                }
+            }
+        }
+    }
+}
