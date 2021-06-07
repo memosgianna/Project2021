@@ -4,7 +4,7 @@ class Beneficiary extends User{
 
 
     private int noPersons;
-    ArrayList<RequestDonationList> receivedList= new ArrayList<RequestDonationList>();
+    ArrayList<RequestDonation> receivedList= new ArrayList<RequestDonation>();
     ArrayList<Requests> requestsList= new ArrayList<Requests>();
 
     Beneficiary()
@@ -15,7 +15,7 @@ class Beneficiary extends User{
         super(name, phone);
 
         noPersons = 1;
-        receivedList = new ArrayList<>();
+        receivedList = new ArrayList<RequestDonation>();
         requestsList = new ArrayList<>();
 
     }
@@ -24,11 +24,9 @@ class Beneficiary extends User{
 
         super(name, phone);
         this.noPersons = noPersons;
-        receivedList = new ArrayList<>();
+        receivedList = new ArrayList<RequestDonation>();
         requestsList = new ArrayList<>();
     }
-
-    Menu m3= new Menu();
 
     public int getNoPersons() {
 
@@ -36,6 +34,7 @@ class Beneficiary extends User{
     }
 
     public void addRequest(Requests r) {
+
         requestsList.add(r);
     }
 
@@ -44,15 +43,27 @@ class Beneficiary extends User{
 
     }
 
-    public void modifyRequest() {
+    public void modifyRequest(int index, double qn) {
 
-    }
-
-    public void commitRequest() {
-
-
+        requestsList.get(index).modify(index,qn);
     }
 
 
+    public void commitRequest(RequestDonationList rdl,Organization o) {
 
+        int i = 0;
+        for (RequestDonation rd : rdl.getList()) {
+
+            o.getCurrentDonations().modify(i, o.getCurrentDonations().getWithIndex(i).getQuantity()-rd.getQuantity());
+            i++;
+        }
+
+        System.out.println("Oloklhrwsh Dwreas");
+        rdl.reset();
+
+    }
+
+    public void reset() {
+        requestsList.clear();
+    }
 }
