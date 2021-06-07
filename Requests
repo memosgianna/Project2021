@@ -1,0 +1,118 @@
+public class Requests extends RequestDonationList {
+
+    public Requests() {
+    }
+
+    Beneficiary ben = new Beneficiary();
+    RequestDonation rdon = new RequestDonation();
+    Organization org = new Organization();
+
+
+    @Override
+    public void add(RequestDonation rdon, Organization org) {
+
+        for (RequestDonation r : org.getCurrentDonations().getList()) {
+
+            if (r.getEntity().getId() == rdon.getEntity().getId()) {
+
+                if (rdon.getQuantity() <= r.getQuantity()) {
+
+                    if (validRequestDonation(rdon, ben)) {
+
+                        super.add(rdon, org);
+
+                        break;
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+    @Override
+    public void modify(int index, double qn) {
+
+        for (RequestDonation r : org.getCurrentDonations().getList()) {
+
+            if (r.getEntity().getId() == rdon.getEntity().getId()) {
+
+                if (rdon.getQuantity() <= r.getQuantity()) {
+
+                    if (validRequestDonation(rdon, ben)) {
+
+                        super.modify(index, qn);
+
+                        break;
+                    }
+
+
+                }
+
+            }
+
+        }
+
+    }
+
+    public boolean validRequestDonation(RequestDonation rd, Beneficiary ben) {
+
+        if (rd.getEntity() instanceof Material) {
+
+            double qtToCheck = rd.getQuantity();
+            Material mat = (Material) rd.getEntity();
+
+            if (ben.getNoPersons() == 1) {
+
+                if (qtToCheck <= mat.getLevel1()) {
+
+                    return true;
+                }
+
+            } else if (ben.getNoPersons() <= 4) {
+
+                if (qtToCheck <= mat.getLevel2()) {
+
+                    return true;
+                }
+
+            } else if (qtToCheck <= mat.getLevel3()) {
+
+                return true;
+            }
+
+        } else if (rd.getEntity() instanceof Service) {
+
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public void commit(RequestDonation rdon, Organization org) {
+        int i=0;
+
+        for (RequestDonation r : org.getCurrentDonations().getList()) {
+
+            if (r.getEntity().getId() == rdon.getEntity().getId()) {
+
+                if (rdon.getQuantity() <= r.getQuantity()) {
+
+
+                    if (validRequestDonation(rdon, ben)) {
+
+                        super.remove(i);
+                        ben.receivedList.add(r);
+
+                    } else
+                        System.out.println("H dwrea den pragmatopoihthhke me epituxia");
+
+                }
+
+            }
+        }
+    }
+}
