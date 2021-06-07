@@ -1,0 +1,18 @@
+import java.util.ArrayList;
+
+public class Offers extends RequestDonationList{
+
+    public Offers() {}
+
+
+    public void commit(Organization org) {
+
+        ArrayList<RequestDonation> newlist = this.getList();
+
+        org.setCurrentDonations(new RequestDonationList(newlist));
+
+        this.rdEntities.clear();
+
+    }
+
+}
