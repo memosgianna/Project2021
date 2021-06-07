@@ -1,0 +1,38 @@
+class Material extends Entity
+{
+    final private double  Level1; // ena atomo
+    final private double  Level2; // 2-4 atoma
+    final private double  Level3; // 5+ atoma
+
+    Material(String name, String description, int id, double Level1, double Level2, double Level3) {
+
+        super(name, description, id);
+        this.Level1=Level1;
+        this.Level2=Level2;
+        this.Level3=Level3;
+
+    }
+
+    @Override
+    public String getDetails() {
+
+        return "EntityType: Material  One person is entitled to have " + Level1 + "  2 to 4 people are entitled to have " + Level2 + "  5+ people are entitled to have " + Level3;
+    }
+
+    public double getLevel1() {
+
+        return Level1;
+    }
+
+    public double getLevel2() {
+
+        return Level2;
+    }
+
+    public double getLevel3() {
+
+        return Level3;
+    }
+
+
+}
