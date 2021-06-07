@@ -1,0 +1,172 @@
+import java.util.ArrayList;
+
+public class Organization {
+
+    private String name;
+    private Admin admin;
+    private ArrayList<Entity> entityList;
+    private ArrayList<Donator> donatorList;
+    private ArrayList<Beneficiary> beneficiaryList;
+
+    private RequestDonationList currentDonations;
+
+    Organization(){
+        entityList = new ArrayList<>();
+        donatorList = new ArrayList<>();
+        beneficiaryList = new ArrayList<>();
+    }
+
+    public Organization(String name, Admin admin) {
+
+        this.name = name;
+        this.admin = admin;
+
+        entityList = new ArrayList<>();
+        donatorList = new ArrayList<>();
+        beneficiaryList = new ArrayList<>();
+
+    }
+
+    public RequestDonationList getCurrentDonations() {
+
+        return currentDonations;
+    }
+
+    public 	ArrayList<Entity> getEntList(){
+
+        return entityList;
+    }
+
+    public void setCurrentDonations(RequestDonationList crd) {
+
+        currentDonations = crd;
+    }
+
+    public void setAdmin(Admin admin) {
+
+        this.admin = admin;
+
+    }
+
+    public Admin getAdmin() {
+
+        return admin;
+    }
+
+    public void addEntity(Entity en) {
+
+        boolean exist = false;
+
+        for(Entity e: entityList) {
+
+            if (e.getId() == en.getId()) {
+                exist = true;
+            }
+
+        }
+        if(!exist) {
+            entityList.add(en);
+        }
+
+    }
+
+    public void removeEntity( int index) {
+        entityList.remove(index);
+    }
+
+    public void insertDonator(Donator don) {
+
+        boolean exist = false;
+
+        for(Donator d: donatorList) {
+
+            if (d.getName() == don.getName() && d.getPhone() == don.getPhone()) {
+                exist = true;
+            }
+
+        }
+
+        if(!exist) {
+            donatorList.add(don);
+        }
+
+    }
+
+    public void removeDonator(int index) {
+
+        donatorList.remove(index);
+
+    }
+
+    public void insertBeneficiary(Beneficiary ben) {
+
+        boolean exist = false;
+
+        for(Beneficiary b: beneficiaryList) {
+
+            if (b.getName() == ben.getName() && b.getPhone() == ben.getPhone()) {
+                exist = true;
+            }
+
+        }
+        if(!exist) {
+            beneficiaryList.add(ben);
+        }
+
+    }
+
+    public void removeBeneficiary(int index) {
+
+        beneficiaryList.remove(index);
+
+    }
+
+    public void listEntities() {
+
+        System.out.println("Materials:");
+
+        for(Entity e: entityList) {
+
+            if(e instanceof Material) {
+                System.out.println(e.getDetails());
+            }
+
+        }
+
+        System.out.println("Services:");
+
+        for(Entity e: entityList) {
+
+            if(e instanceof Service){
+                System.out.println(e.getDetails());
+            }
+
+        }
+
+    }
+
+    public void listBeneficiaries() {
+        int i=1;
+
+        for(Beneficiary d : beneficiaryList) {
+
+            System.out.println(i+"."+"Name: " + d.getName() + " Phone number: " + d.getPhone());
+            i++;
+
+        }
+
+    }
+
+    public void listDonators() {
+        int i=1;
+
+        for(Donator d : donatorList) {
+
+            System.out.println(i+"."+"Name: " + d.getName() + " Phone number: " + d.getPhone());
+            i++;
+
+        }
+
+    }
+
+}
